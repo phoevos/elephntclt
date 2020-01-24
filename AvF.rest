@@ -1,0 +1,2 @@
+GET http://localhost:8765/energy/api/ActualvsForecast/Greece/PT60M/year/2018?format=json&apikey=1234-abcd-5678
+X-OBSERVATORY-AUTH: {"username": "test","password": "1234"}
