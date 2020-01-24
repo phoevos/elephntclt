@@ -1,2 +1,2 @@
-GET http://localhost:8765/energy/api/AggregatedGenerationPerType/Greece/Solar/PT60M/year/2018?format=json&apikey=1234-abcd-5678
+GET http://localhost:8765/energy/api/AggregatedGenerationPerType/Greece/Fossil Gas/PT60M/date/2018-01-04?format=json&apikey=1234-abcd-5678
 X-OBSERVATORY-AUTH: {"username": "test","password": "1234"}

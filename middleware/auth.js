@@ -1,4 +1,4 @@
-const DUsers = require('../models/user');
+const User = require('../models/user');
 
 function JSONnoerr(input) {
     var output;
@@ -14,8 +14,8 @@ function JSONnoerr(input) {
 
 function auth(req, res, next) {
     if (!req.query.apikey) return res.status(401).send('Access denied, no key provided.');
-    DUsers.
-        findOne({ key: req.query.apikey }).
+    User.
+        findOne({ apikey: req.query.apikey }).
         lean().
         exec({}, function (error, output) {
         if (error) return res.status(400).send(error);

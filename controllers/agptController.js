@@ -138,6 +138,7 @@ async function findByMonth(req, res) {
                 Year: results[i].Year,
                 Month: results[i].Month,
                 Day: i,
+                // ProductionType: results[i].ProductionTypeId.ProductionTypeText,
                 ActualGenerationOutputByDayValue: totals[i]
             };
             results[i] = ret;
@@ -208,6 +209,7 @@ async function findByYear(req, res) {
                 ResolutionCode: results[i].ResolutionCodeId.ResolutionCodeText,
                 Year: results[i].Year,
                 Month: i,
+                // ProductionType: results[i].ProductionTypeId.ProductionTypeText,
                 ActualGenerationOutputByMonthValue: totals[i]
             };
             results[i] = ret;
