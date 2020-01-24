@@ -1,4 +1,4 @@
-const DUsers = require('../models/userAuth.js');
+const DUsers = require('../models/user');
 
 function JSONnoerr(input) {
     var output;

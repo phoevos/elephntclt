@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const util = require('util');
+// const util = require('util');
 
 // create express app
 const app = express();
@@ -39,6 +39,8 @@ require('./routes/atlRoutes.js')(app);
 require('./routes/datlfRoutes.js')(app);
 require('./routes/agptRoutes.js')(app);
 require('./routes/avfRoutes.js')(app);
+require('./routes/healthCheckRoutes.js')(app);
+require('./routes/resetRoutes.js')(app);
 
 // listen for requests
 app.listen(8765, () => {
