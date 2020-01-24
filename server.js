@@ -37,7 +37,7 @@ mongoose.connect(dbConfig.url, {
 
 require('./routes/atlRoutes.js')(app);
 require('./routes/datlfRoutes.js')(app);
-// require('./routes/agptRoutes.js')(app);
+require('./routes/agptRoutes.js')(app);
 //require('./routes/avfRoutes.js')(app);
 
 // listen for requests

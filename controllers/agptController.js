@@ -1,8 +1,8 @@
 const {AggregatedGenerationPerType} = require('../models/aggregatedGenerationPerType.js');
+const {ProductionType} = require('../models/productionType.js');
 const {ResolutionCode} = require('../models/resolutionCode.js');
 const {MapCode} = require('../models/mapCode.js');
 const {AreaTypeCode} = require('../models/areaTypeCode.js');
-const {ProductionType} = require('../models/productionType.js');
 const csv = require('csv-express')
 const mongoose = require('mongoose');
 
@@ -15,21 +15,42 @@ function resolutionCodeMap(area_str) {
 
     return resolutionCodeNum;
 }
-// TO DO:
-// -FIX NAMES IN ACCORDANCE TO MODEL
-// -SEPARATE QUERY FOR PRODUCTION TYPE
+
+async function productionTypeMap(prod_str) {
+    if (prod_str == 'AllTypes') 
+        return 0
+    else {
+       let productionTypeNum = await ProductionType
+            .findOne({ProductionTypeText: prod_str})
+        
+        return productionTypeNum._id
+    }
+}
 
 async function findByDay(req, res) {
     const year = req.params.DateF.substr(0, 4)
     const month = req.params.DateF.substr(5, 2)
     const day = req.params.DateF.substr(8, 2)
-    let results = await AggregatedGenerationPerType.
-        find({ AreaName: req.params.AreaNameF, ProductionTypeId: req.params.ProductionTypeF, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year, Month: month, Day: day }).
-        sort({ DateTime: 1 }).
-        populate('AreaTypeCodeId', 'AreaTypeCodeText').
-        populate('ProductionTypeId', 'ProductionTypeText').
-        populate('MapCodeId', 'MapCodeText').
-        populate('ResolutionCodeId', 'ResolutionCodeText')
+    const productionType = await productionTypeMap(req.params.ProductionTypeF)
+    let results
+    if (productionType == 0) {
+        results = await AggregatedGenerationPerType.
+            find({ AreaName: req.params.AreaNameF, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year, Month: month, Day: day }).
+            sort({ DateTime: 1 }).
+            populate('AreaTypeCodeId', 'AreaTypeCodeText').
+            populate('ProductionTypeId', 'ProductionTypeText').
+            populate('MapCodeId', 'MapCodeText').
+            populate('ResolutionCodeId', 'ResolutionCodeText')
+    }
+    else {
+       results = await AggregatedGenerationPerType.
+            find({ AreaName: req.params.AreaNameF, ProductionTypeId: productionType, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year, Month: month, Day: day }).
+            sort({ DateTime: 1 }).
+            populate('AreaTypeCodeId', 'AreaTypeCodeText').
+            populate('ProductionTypeId', 'ProductionTypeText').
+            populate('MapCodeId', 'MapCodeText').
+            populate('ResolutionCodeId', 'ResolutionCodeText')
+    }
     var i, ret;
     const rLength = results.length;
     if (rLength) {
@@ -74,13 +95,26 @@ exports.findByDay = findByDay
 async function findByMonth(req, res) {
     const year = req.params.MonthF.substr(0, 4)
     const month = req.params.MonthF.substr(5, 2)
-    let results = await AggregatedGenerationPerType.
-        find({ AreaName: req.params.AreaNameF, ProductionTypeId: req.params.ProductionTypeF, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year, Month: month }).
-        sort({ DateTime: 1 }).
-        populate('AreaTypeCodeId', 'AreaTypeCodeText').
-        populate('ProductionTypeId', 'ProductionTypeText').
-        populate('MapCodeId', 'MapCodeText').
-        populate('ResolutionCodeId', 'ResolutionCodeText')
+    const productionType = await productionTypeMap(req.params.ProductionTypeF)
+    let results
+    if (productionType == 0) {
+        results = await AggregatedGenerationPerType.
+            find({ AreaName: req.params.AreaNameF, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year, Month: month }).
+            sort({ DateTime: 1 }).
+            populate('AreaTypeCodeId', 'AreaTypeCodeText').
+            populate('ProductionTypeId', 'ProductionTypeText').
+            populate('MapCodeId', 'MapCodeText').
+            populate('ResolutionCodeId', 'ResolutionCodeText')
+    }
+    else {
+        results = await AggregatedGenerationPerType.
+            find({ AreaName: req.params.AreaNameF, ProductionTypeId: productionType, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year, Month: month }).
+            sort({ DateTime: 1 }).
+            populate('AreaTypeCodeId', 'AreaTypeCodeText').
+            populate('ProductionTypeId', 'ProductionTypeText').
+            populate('MapCodeId', 'MapCodeText').
+            populate('ResolutionCodeId', 'ResolutionCodeText')
+    }
     var i, ret;
     let maxDay = 1
     let totals = new Array(32).fill(0);
@@ -90,7 +124,7 @@ async function findByMonth(req, res) {
             if(item.Day > maxDay) {
                 maxDay = item.Day
             }
-            totals[item.Day] += item.AggregatedGenerationPerTypeValue;
+            totals[item.Day] += item.ActualGenerationOutput;
         });
         const tLength = maxDay+1;
         for (i = 1; i < tLength; i++) {
@@ -132,13 +166,26 @@ exports.findByMonth = findByMonth
 
 async function findByYear(req, res) {
     const year = req.params.YearF.substr(0, 4)
-    let results = await AggregatedGenerationPerType.
-        find({ AreaName: req.params.AreaNameF, ProductionTypeId: req.params.ProductionTypeF, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year }).
-        sort({ DateTime: 1 }).
-        populate('AreaTypeCodeId', 'AreaTypeCodeText').
-        populate('ProductionTypeId', 'ProductionTypeText').
-        populate('MapCodeId', 'MapCodeText').
-        populate('ResolutionCodeId', 'ResolutionCodeText')
+    const productionType = await productionTypeMap(req.params.ProductionTypeF)
+    let results
+    if (productionType == 0) {
+        results = await AggregatedGenerationPerType.
+            find({ AreaName: req.params.AreaNameF, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year }).
+            sort({ DateTime: 1 }).
+            populate('AreaTypeCodeId', 'AreaTypeCodeText').
+            populate('ProductionTypeId', 'ProductionTypeText').
+            populate('MapCodeId', 'MapCodeText').
+            populate('ResolutionCodeId', 'ResolutionCodeText')
+    }
+    else {
+        results = await AggregatedGenerationPerType.
+            find({ AreaName: req.params.AreaNameF, ProductionTypeId: productionType, ResolutionCodeId: resolutionCodeMap(req.params.ResolutionF), Year: year }).
+            sort({ DateTime: 1 }).
+            populate('AreaTypeCodeId', 'AreaTypeCodeText').
+            populate('ProductionTypeId', 'ProductionTypeText').
+            populate('MapCodeId', 'MapCodeText').
+            populate('ResolutionCodeId', 'ResolutionCodeText')
+    }
     var i, ret;
     let maxMonth = 1
     let totals = new Array(13).fill(0);
@@ -148,7 +195,7 @@ async function findByYear(req, res) {
             if(item.Month > maxMonth) {
                 maxMonth = item.Month
             }
-            totals[item.Month] += item.AggregatedGenerationPerTypeValue;
+            totals[item.Month] += item.ActualGenerationOutput;
         });
         const tLength = maxMonth+1;
         for (i = 1; i < tLength; i++) {

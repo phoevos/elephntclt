@@ -1,0 +1,2 @@
+GET http://localhost:8765/energy/api/DayAheadTotalLoadForecast/Greece/PT60M/date/2018-01-04?format=json&apikey=1234-abcd-5678
+X-OBSERVATORY-AUTH: {"username": "test","password": "1234"}
