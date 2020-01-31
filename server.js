@@ -41,6 +41,9 @@ require('./routes/agptRoutes.js')(app);
 require('./routes/avfRoutes.js')(app);
 require('./routes/healthCheckRoutes.js')(app);
 require('./routes/resetRoutes.js')(app);
+// require('./routes/adminRoutes.js')(app);
+// require('./routes/loginRoutes.js')(app);
+// require('./routes/logoutRoutes.js')(app);
 
 // listen for requests
 app.listen(8765, () => {

@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema({
-    quota: Number,
+    quota: {
+        type: Number,
+        required: true
+    },
     username: {
         type: String,
         unique: true,
@@ -11,11 +14,15 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     isAdmin: {
         type: Boolean,
         default: false
     },
-    apikey: String,
+    token: String,
 }, {
     timestamps: false
 });
