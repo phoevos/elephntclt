@@ -1,22 +1,33 @@
 {
-  "name": "notes",
+  "name": "elephntclt",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll --verbose"
   },
-  "author": "",
+  "author": "Phoevos",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^4.0.0",
     "body-parser": "^1.19.0",
+    "busboy": "^0.3.1",
+    "busboy-body-parser": "^0.3.2",
+    "config": "^3.2.6",
+    "cors": "^2.8.5",
     "csv-express": "^1.2.2",
     "express": "^4.17.1",
+    "express-busboy": "^8.0.0",
     "fast-csv": "^4.0.2",
     "fs": "0.0.1-security",
     "hex2dec": "^1.1.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.7",
     "nodemon": "^2.0.2"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
   }
 }

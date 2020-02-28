@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
-const dbConfig = require('../config/database.config.js');
+const config = require('config')
 
+const db = config.get('db')
 
 exports.healthCheck = (req, res) => {
-    mongoose.connect(dbConfig.url, {
+    mongoose.connect(db, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true

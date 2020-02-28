@@ -1,0 +1,5 @@
+{
+    "jwtPrivateKey": "1234",
+    "adminPassword": "5678",
+    "db": "mongodb://localhost:27017/energy_test"
+}

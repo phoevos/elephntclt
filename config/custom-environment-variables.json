@@ -1,0 +1,4 @@
+{
+    "jwtPrivateKey": "softeng_jwtPrivateKey",
+    "adminPassword": "softeng_adminPassword"
+}

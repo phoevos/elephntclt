@@ -1,31 +1,16 @@
-const User = require('../models/user');
+const jwt = require('jsonwebtoken')
+const config = require('config')
 
-function JSONnoerr(input) {
-    var output;
-    try {
-        output = JSON.parse(input)
+function auth(req, res, next){
+    const token = req.header('X-OBSERVATORY-AUTH')
+    if(!token) return res.status(401).send('Access denied. No token provided.')
+    try{
+        const decoded = jwt.verify(token, config.get('jwtPrivateKey'))
+        req.user = decoded
+        next()
     }
-    catch (error) {
-        output = JSON.parse("{\"username\": \"\",\"password\": \"\"}")
-
+    catch{
+        res.status(400).send('Access denied. Invalid Token.')
     }
-    return output
 }
-
-function auth(req, res, next) {
-    if (!req.query.apikey) return res.status(401).send('Access denied, no key provided.');
-    User.
-        findOne({ apikey: req.query.apikey }).
-        lean().
-        exec({}, function (error, output) {
-        if (error) return res.status(400).send(error);
-
-        var creds = JSONnoerr(req.header('X-OBSERVATORY-AUTH'));
-        if (creds.username == output.username && creds.password == output.password) {
-            next();
-        }
-        else return res.status(400).send('Wrong credentials');
-    });
-}
-
 exports.auth = auth;
