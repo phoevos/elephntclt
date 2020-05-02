@@ -15,16 +15,17 @@ async function plantAdmin(res){
         email: 'indlovu@wena.gr',
         isAdmin: true
     })
-    await user.save()
-    res.send({status:"OK"})
+    user.save(() => {
+        res.send({status:"OK"})
+    })
 }
 
 async function reset(req, res){
     await ActualTotalLoad.deleteMany({})
     await DayAheadTotalLoadForecast.deleteMany({})
     await AggregatedGenerationPerType.deleteMany({})
-    mongoose.connection.dropCollection('User', (err, result) => {
-        if(err) console.log('Failed to delete the User collection.')
+    User.deleteMany({}, (err) => {
+        if(err) throw err
         else plantAdmin(res)
     })
 }

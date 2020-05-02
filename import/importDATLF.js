@@ -3,12 +3,11 @@ const mongodb = require("mongodb").MongoClient;
 const fastcsv = require("fast-csv");
 const mongoose = require('mongoose');
 
-function importDATLF(source){
+function importDATLF(ress, inDB){
     let url = "mongodb://localhost:27017/";
-    let stream = fs.createReadStream(source);
+    let stream = fs.createReadStream('./wena/indlovu');
     let csvData = [];
     let first = true;
-    let inFile, inDB, imported;
     let csvStream = fastcsv
         .parse({ delimiter: ';' })
         .on("data", function (data) {
@@ -49,19 +48,17 @@ function importDATLF(source){
                         .collection("DayAheadTotalLoadForecast")
                         .insertMany(csvData, (err, res) => {
                             if (err) throw err;
-                            const imported = res.insertedCount
-                            inDB = 'indlovu'
-                            client.close();
+                            let imported = res.insertedCount
+                            return ress.status(200).send({
+                                totalRecordsInFile: csvData.length,
+                                totalRecordsImported: imported,
+                                totalRecordsInDB: (inDB + imported)
+                            })
                         });
                 }
             );
         });
 
     stream.pipe(csvStream);
-    return {
-        inFile: inFile,
-        imported: imported,
-        inDB: inDB
-    }
 }
 exports.importDATLF = importDATLF

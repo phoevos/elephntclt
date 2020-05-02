@@ -1,5 +1,5 @@
 {
-    "jwtPrivateKey": "1234",
-    "adminPassword": "5678",
+    "jwtPrivateKey": "elephntclt",
+    "adminPassword": "321nimda",
     "db": "mongodb://localhost:27017/energy_test"
 }

@@ -1,4 +1,6 @@
 *.csv
+*.pem
+*.rnd
 
 node_modules
 routecheck

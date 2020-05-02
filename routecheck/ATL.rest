@@ -1,2 +1,0 @@
-GET http://localhost:8765/energy/api/ActualTotalLoad/Greece/PT60M/month/2018-01?format=json&apikey=1234-abcd-5678
-X-OBSERVATORY-AUTH: {"username": "test","password": "1234"}

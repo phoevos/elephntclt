@@ -5,7 +5,9 @@ async function quota(req, res, next){
         let user =  await User.findOne({username: req.user.username})
         if(user.quota == 0) return res.status(402).send('No quota.')
         const newQuota = user.quota - 1
-        await User.findOneAndUpdate({username: user.username}, {quota: newQuota})
+        user.quota = newQuota
+        await user.save()
+        // User.findOneAndUpdate({username: req.user.username}, {quota: newQuota})
     }    
     next()
 }

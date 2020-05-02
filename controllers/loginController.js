@@ -8,10 +8,13 @@ async function login(req, res) {
     
     const validPassword = await bcrypt.compare(req.body.password, user.password)
     if(!validPassword) return res.status(400).send('Invalid username or password.')
-   
-    const token = user.generateAuthToken()
-    res.status(200).send({
-        token: token
+    let token = user.generateAuthToken()
+
+    user.isLoggedIn = true
+    user.save(() => {
+        res.status(200).send({
+            token: token
+        })
     })
 }
 exports.login = login
