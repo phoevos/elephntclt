@@ -11,7 +11,7 @@
   "author": "Thomas Doukas",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.2",
     "chalk": "^3.0.0",
     "commander": "^4.1.0",
     "form-data": "^3.0.0"
